@@ -1,6 +1,6 @@
 [package]
 name = "ch12_00_an_io_project"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Perfspec <lewisrwebb@gmail.com>"]
 edition = "2018"
 
