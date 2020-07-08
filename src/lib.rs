@@ -19,8 +19,23 @@ impl Config {
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)?;
-	println!("{}", contents);
+	
+	for line in search(&config.query, &contents) {
+        println!("{}", line);
+    }
+	
     Ok(())
+}
+
+pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+	let mut results = Vec::new();
+	
+	for line in contents.lines() {
+		if line.contains(query) {
+			results.push(line);
+		}
+	}
+    results
 }
 
 #[cfg(test)]
@@ -55,4 +70,15 @@ mod tests {
 			Err(e) => return Err(e),
 		}
 	}
+	
+	#[test]
+    fn when_one_line_contains_search_query_then_return_that_line_in_a_vec() {
+        let query = "duct";
+        let contents = "\
+Rust:
+safe, fast, productive.
+Pick three.";
+
+        assert_eq!(vec!["safe, fast, productive."], search(query, contents));
+    }
 }
